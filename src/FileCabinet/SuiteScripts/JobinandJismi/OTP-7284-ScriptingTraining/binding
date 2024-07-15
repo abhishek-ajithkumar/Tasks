@@ -1,0 +1,43 @@
+/**
+ * @NApiVersion 2.x
+ * @NScriptType ClientScript
+ */
+define(['N/currentRecord'], function(currentRecord) {
+    function pageInit(context) {
+        var rec = context.currentRecord;
+        console.log('Client Script Loaded for Record:', rec.type);
+    }
+
+    return {
+        pageInit: pageInit
+    };
+});
+
+
+/**
+ * @NApiVersion 2.x
+ * @NScriptType Suitelet
+ */
+define(['N/ui/serverWidget', 'N/url'], function(ui, url) {
+    function onRequest(context) {
+        if (context.request.method === 'GET') {
+            var form = ui.createForm({
+                title: 'My Suitelet Form'
+            });
+
+            form.clientScriptModulePath = 503;
+
+            form.addField({
+                id: 'custpage_field',
+                type: ui.FieldType.TEXT,
+                label: 'Sample Field'
+            });
+
+            context.response.writePage(form);
+        }
+    }
+
+    return {
+        onRequest: onRequest
+    };
+});
